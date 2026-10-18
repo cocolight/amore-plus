@@ -8,7 +8,7 @@
 
 | 你是 | 请看 |
 |---|---|
-| **想使用这个主题** | [**README.theme.md**](README.theme.md) —— 面向使用者的说明（安装、设置、功能、截图、授权）。提交到 [Gridea-Pro 官方主题仓库](https://github.com/Gridea-Pro/gridea-pro-themes)的版本即由此文件整理而来。 |
+| **想使用这个主题** | [**README.theme.md**](README.theme.md) —— 面向使用者的说明：安装、主题设置、功能、截图、授权。 |
 | **想参与开发** | 当前文件 —— 开发约定、目录结构、模板方言注意事项、验证方式 |
 
 **在线演示**：<https://cocolight.github.io/amore-plus/docs/demo/>（演示页本身是一篇《如何使用 amore-plus》的示例文章）
@@ -73,17 +73,18 @@ npx prettier --check 'src/**/*.{html,css,js}'
 
 ## 目录结构
 
-- `src/` — 主题源码（模板 + 静态资源 + 设置定义）
-  - `src/config.json` — 主题元信息与设置定义（名称/版本/作者/25 项 `customConfig`，含 9 项 Giscus 评论设置），是配置与版本号的唯一事实源
-  - `src/templates/` — 页面模板（首页/博客/文章/归档/分类/标签/友链/关于/404/闪念），均 `{% extends "base.html" %}`
-  - `src/templates/partials/` — 复用片段：`head` / `header` / `footer` / `scripts` / `comments` / 各评论系统 / `global-seo` / `index-seo` / `reading-progress` 等
-  - `src/assets/styles/` — `main.css`、`icons.css`、`lib/remixicon.woff2`
-  - `src/assets/lib/` — 第三方脚本（vendored）`Valine.min.js`
-  - `src/assets/media/images/` — `favicon.ico`、`avatar.jpg`、`zuobiao.svg`、`preview.png`
-- `tests/` — 测试（当前为空；主题无独立单元测试，正确性由宿主平台渲染验证）
-- `docs/` — 项目自己的文档（使用指南、参考、教程……）
-- `docs/engineering/` — 模板预置的工程协作文档（架构 / 配置 / 完成定义 / 发版 / ADR）
-- `scripts/` — 辅助脚本（当前为空）
+- `src/`：主题源码（模板 + 静态资源 + 设置定义）
+  - `src/config.json`：主题元信息与设置定义（名称/版本/作者/25 项 `customConfig`，含 9 项 Giscus 评论设置），是配置与版本号的唯一事实源
+  - `src/templates/`：页面模板（首页/博客/文章/归档/分类/标签/友链/关于/404/闪念），均 `{% extends "base.html" %}`
+  - `src/templates/partials/`：复用片段，含 `head` / `header` / `footer` / `scripts` / `comments` / 各评论系统 / `global-seo` / `index-seo` / `reading-progress` 等
+  - `src/assets/styles/`：`main.css`、`icons.css`、`lib/remixicon.woff2`
+  - `src/assets/lib/`：第三方脚本（vendored）`Valine.min.js`
+  - `src/assets/media/images/`：`favicon.ico`、`avatar.jpg`、`zuobiao.svg`、`preview.png`
+- `tests/`：测试（当前为空；主题无独立单元测试，正确性由宿主平台渲染验证）
+- `docs/`：文档，含使用指南、参考与教程
+  - `docs/demo/`：在线演示页，可用 GitHub Pages 访问
+  - `docs/engineering/`：工程协作文档（架构 / 配置 / 完成定义 / 发版 / ADR）
+- `scripts/`：辅助脚本（当前为空）
 
 ## 开发约定
 
