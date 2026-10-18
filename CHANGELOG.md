@@ -5,6 +5,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- 修复演示站站内导航丢失 GitHub Pages 路径前缀（`/amore-plus`）的问题：Gridea 产物使用根绝对路径（`href="/post"`、`/styles/main.min.css`），原先依赖 `<base href="/amore-plus/">` 适配子路径的方案无效——`<base>` 仅对相对路径生效，绝对路径仍按站点根解析。`tools/publish-to-pages.py` 改为逐个改写 `href` / `src` / `srcset` 中的根绝对路径并移除 `<base>` 注入，处理逻辑幂等（已带前缀的路径不会重复添加）。
+
 ## [1.0.0] - 2026-10-18
 
 首个正式版本。完成项目骨架、明/暗双主题、内容页与阅读进度、导航、闪念与热力图、SEO、主题设置面板，并新增 Giscus 评论支持、文章目录（TOC）与顶部阅读进度细线；其余四套评论系统完成 Gridea-Pro 适配。
