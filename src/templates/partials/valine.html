@@ -1,8 +1,8 @@
 {% if commentSetting and commentSetting.showComment and commentSetting.commentPlatform == 'Valine' %}
 <!-- Gridea-Pro 把评论配置平铺注入 commentSetting 顶层；Valine 必填项为 appId / appKey / serverURLs -->
-{% set valine_app_id = commentSetting.appId | default('', true) %}
-{% set valine_app_key = commentSetting.appKey | default('', true) %}
-{% set valine_server_urls = commentSetting.serverURLs | default('', true) %}
+{% set valine_app_id = commentSetting.appId|default:"" %}
+{% set valine_app_key = commentSetting.appKey|default:"" %}
+{% set valine_server_urls = commentSetting.serverURLs|default:"" %}
 
 {% if valine_app_id and valine_app_key and valine_server_urls %}
 <div id="comments" class="cf">
@@ -48,8 +48,8 @@
 
     // Custom Script to add "Blogger" badge
     (function () {
-        // 博主昵称：跟随站点名，可在主题设置中通过 footerInfo 之外的约定调整
-        const MASTER_NICK = "{{ config.siteName }}";
+        // 博主昵称：跟随站点名。用 escapejs 避免站点名含引号/反斜杠时破坏 JS 字符串
+        const MASTER_NICK = "{{ config.siteName|escapejs }}";
 
         const observer = new MutationObserver(function (mutations) {
             mutations.forEach(function (mutation) {

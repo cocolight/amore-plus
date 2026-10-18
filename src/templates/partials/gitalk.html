@@ -1,12 +1,13 @@
 <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
 <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 
-<!-- Gridea-Pro 把评论配置平铺注入 commentSetting 顶层；此处优先取平台字段，缺失时回退站点信息 -->
-{% set gitalk_client_id = commentSetting.clientId | default('', true) %}
-{% set gitalk_client_secret = commentSetting.clientSecret | default('', true) %}
-{% set gitalk_owner = commentSetting.owner | default('', true) %}
-{% set gitalk_repo = commentSetting.repo | default('', true) %}
-{% set gitalk_admin = commentSetting.admin | default(gitalk_owner, true) %}
+<!-- Gridea-Pro 把评论配置平铺注入 commentSetting 顶层；此处取平台字段，admin 缺失时回退 owner -->
+{% set gitalk_client_id = commentSetting.clientId|default:"" %}
+{% set gitalk_client_secret = commentSetting.clientSecret|default:"" %}
+{% set gitalk_owner = commentSetting.owner|default:"" %}
+{% set gitalk_repo = commentSetting.repo|default:"" %}
+{% set gitalk_admin = commentSetting.admin|default:"" %}
+{% if not gitalk_admin %}{% set gitalk_admin = gitalk_owner %}{% endif %}
 
 {% if gitalk_client_id and gitalk_client_secret and gitalk_owner and gitalk_repo %}
 <div id="gitalk-container" class="gitalk-container"></div>
