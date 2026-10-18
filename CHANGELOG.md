@@ -18,7 +18,8 @@
 
 ### Fixed
 
--
+- 修复文章目录（TOC）高亮不随动的问题：`partials/scripts.html` 原以固定 `top <= 100` 阈值判定当前章节且 `activeIndex` 初值为 0，导致滚动到首个标题之前时错误高亮首项（表现为「目录卡住不随动」）、末章节距文档末尾不足阈值时永远无法激活。现改为按「阅读线」（`max(80, 视口高 22%)`）判定、`activeIndex` 初值 `-1` 表示未进入任何章节而不高亮任何项、滚到文档底部时强制高亮末项；`scroll` 监听加 `requestAnimationFrame` 节流与变化短路，并补 `resize` / `hashchange` 重算。（已通过本地 Gridea-Pro 渲染验证）
+- 新增长目录面板自动跟随：当目录项多于可视高度时，文章滚动切换焦点项会带动目录面板自身滚动，使焦点项尽量保持在面板中心高度（近距 ≤120px 瞬时定位、远距平滑滚动）；用户手动翻目录后自动让位，文章再次滚动即恢复跟随。实现上只改 `panel.scrollTop` 而非 `scrollIntoView`（后者会连带滚动外层页面把正文顶走），并为 `.toc-aside` 加 `overscroll-behavior: contain` 防止翻目录时连带滚动正文。（已通过本地 Gridea-Pro 渲染验证）
 
 ### Removed
 

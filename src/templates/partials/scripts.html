@@ -232,20 +232,110 @@
       links.push(a);
     });
 
-    const onScroll = () => {
-      let activeIndex = 0;
-      headings.forEach((heading, index) => {
-        if (heading.getBoundingClientRect().top <= 100) {
-          activeIndex = index;
+    // 当前章节判定：以「阅读线」（视口顶部往下 22%）为界，取最后一个越线的标题
+    const readingLine = () => Math.max(80, Math.round(window.innerHeight * 0.22));
+
+    // -1 表示尚未进入任何章节（此时不高亮任何目录项）
+    let activeIndex = -1;
+    let ticking = false;
+
+    // ── 目录面板跟随滚动 ────────────────────────────────────────
+    // 面板高度不足以容纳全部目录项时（overflow-y: auto），焦点项需自行保持在可视范围内。
+    const panel = tocAside;
+
+    // 移动距离不超过该值时直接跳到目标位置，超过则平滑滚动：
+    // 逐节滚动多为小幅移动（瞬时更跟手），点击目录跳转多为大幅移动（平滑更自然）
+    const INSTANT_THRESHOLD = 120;
+
+    // 用户手动翻过目录后让位，直到文章再次滚动才恢复跟随
+    let userScrolledPanel = false;
+    const markPanelUserScroll = () => {
+        userScrolledPanel = true;
+    };
+    panel.addEventListener('wheel', markPanelUserScroll, { passive: true });
+    panel.addEventListener('touchmove', markPanelUserScroll, { passive: true });
+
+    const followActive = () => {
+        if (userScrolledPanel || activeIndex < 0) {
+            return;
         }
-      });
-      links.forEach((link, index) => {
-        link.classList.toggle('active', index === activeIndex);
-      });
+        // 目录未超出面板高度时无从滚动
+        if (panel.scrollHeight <= panel.clientHeight) {
+            return;
+        }
+        const link = links[activeIndex];
+        if (!link) {
+            return;
+        }
+
+        // 焦点项中心与面板中心的偏差。
+        // 只改 scrollTop，不使用 scrollIntoView —— 后者会连带滚动外层页面把正文顶走。
+        const linkRect = link.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
+        const delta = (linkRect.top + linkRect.height / 2) - (panelRect.top + panel.clientHeight / 2);
+
+        const maxScroll = panel.scrollHeight - panel.clientHeight;
+        const target = Math.max(0, Math.min(panel.scrollTop + delta, maxScroll));
+        const distance = target - panel.scrollTop;
+        if (Math.abs(distance) < 1) {
+            return;
+        }
+
+        if (Math.abs(distance) <= INSTANT_THRESHOLD) {
+            panel.scrollTop = target;
+        } else {
+            panel.scrollTo({ top: target, behavior: 'smooth' });
+        }
     };
 
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-  });
+    const updateActive = () => {
+        const line = readingLine();
+        let next = -1;
+        headings.forEach((heading, index) => {
+            if (heading.getBoundingClientRect().top <= line) {
+                next = index;
+            }
+        });
+
+        // 已滚到文档底部：强制高亮最后一项。
+        // 末章节距文档末尾往往不足阈值高度，否则它永远无法激活。
+        const scrollEl = document.scrollingElement || document.documentElement;
+        if (scrollEl.scrollTop + window.innerHeight >= scrollEl.scrollHeight - 2) {
+            next = headings.length - 1;
+        }
+
+        if (next === activeIndex) {
+            return;
+        }
+        activeIndex = next;
+        links.forEach((link, index) => {
+            link.classList.toggle('active', index === activeIndex);
+        });
+    };
+
+    const onScroll = () => {
+        if (ticking) {
+            return;
+        }
+        ticking = true;
+        window.requestAnimationFrame(() => {
+            updateActive();
+            followActive();
+            ticking = false;
+        });
+    };
+
+    updateActive();
+    followActive();
+    window.addEventListener('scroll', () => {
+        // 文章再次滚动 → 恢复目录自动跟随
+        userScrolledPanel = false;
+        onScroll();
+    }, { passive: true });
+    // 窗口尺寸变化会改变阅读线位置、面板高度与标题偏移，需重算
+    window.addEventListener('resize', onScroll);
+    // 点击目录锚点跳转后（hash 变化未必触发 scroll）同步一次
+    window.addEventListener('hashchange', onScroll);
+});
 </script>
 
