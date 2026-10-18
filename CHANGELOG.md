@@ -24,4 +24,4 @@
 
 ### Removed
 
--
+- 闪念页、友链页、关于页不再显示评论区：移除 `memos.html`、`links.html`、`about.html` 中无条件引入的 `partials/comments.html`。此前 `comments.html` 仅有全局开关 `commentSetting.showComment`、无页面级开关，故站点一旦开启评论，这三个页面都会渲染评论区。`post.html` 的文章评论不受影响。
