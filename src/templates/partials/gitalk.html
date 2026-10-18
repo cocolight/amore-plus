@@ -1,20 +1,32 @@
 <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
 <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 
-<div id="gitalk-container"></div>
+<!-- Gridea-Pro 把评论配置平铺注入 commentSetting 顶层；此处优先取平台字段，缺失时回退站点信息 -->
+{% set gitalk_client_id = commentSetting.clientId | default('', true) %}
+{% set gitalk_client_secret = commentSetting.clientSecret | default('', true) %}
+{% set gitalk_owner = commentSetting.owner | default('', true) %}
+{% set gitalk_repo = commentSetting.repo | default('', true) %}
+{% set gitalk_admin = commentSetting.admin | default(gitalk_owner, true) %}
+
+{% if gitalk_client_id and gitalk_client_secret and gitalk_owner and gitalk_repo %}
+<div id="gitalk-container" class="gitalk-container"></div>
 
 <script>
+  (function () {
+    var gitalk = new Gitalk({
+      clientID: '{{ gitalk_client_id }}',
+      clientSecret: '{{ gitalk_client_secret }}',
+      repo: '{{ gitalk_repo }}',
+      owner: '{{ gitalk_owner }}',
+      admin: ['{{ gitalk_admin }}'],
+      // Gitalk 要求 id 唯一且长度 < 50
+      id: location.pathname.substring(0, 49),
+      distractionFreeMode: false
+    });
 
-  var gitalk = new Gitalk({
-    clientID: '{{ commentSetting.gitalkSetting.clientId }}',
-    clientSecret: '{{ commentSetting.gitalkSetting.clientSecret }}',
-    repo: '{{ commentSetting.gitalkSetting.repository }}',
-    owner: '{{ commentSetting.gitalkSetting.owner }}',
-    admin: ['{{ commentSetting.gitalkSetting.owner }}'],
-    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
-    distractionFreeMode: false  // Facebook-like distraction free mode
-  })
-
-  gitalk.render('gitalk-container')
-
+    gitalk.render('gitalk-container');
+  })();
 </script>
+{% else %}
+<!-- Gitalk 配置不完整（需 clientId / clientSecret / owner / repo），已跳过渲染 -->
+{% endif %}
