@@ -13,7 +13,7 @@
 | 6 | 评论系统接入 | feature/comments | done | 1 | `partials/comments.html` + `valine`/`waline`/`gitalk`/`disqus` 四套片段存在 |
 | 7 | SEO 与统计分析 | feature/seo | done | 1 | `global-seo.html`/`index-seo.html` 存在；`ga` 配置项可注入 GA |
 | 8 | 主题设置面板 | feature/settings | done | 1 | `src/config.json` 的 `customConfig` 含 16 项设置定义 |
-| 9 | 文章目录（TOC） | feature/post-toc | planned | 2 | `post.html` 引用 `partials/toc.html`；文章页渲染出目录节点（`id="toc"` 或 `.toc`），由正文 `h2`/`h3` 标题自动生成锚点且可点击跳转 |
+| 9 | 文章目录（TOC） | feature/post-toc | in-progress | 2 | `post.html` 引用 `partials/toc.html`；文章页渲染出目录节点（`id="toc"` 或 `.toc`），由正文 `h2`/`h3` 标题自动生成锚点且可点击跳转 |
 | 10 | Giscus 评论支持 | feature/giscus | done | 6 | `partials/giscus.html` 存在并被 `comments.html` 引用；`src/config.json` 的 `customConfig` 新增 Giscus 设置（`giscusRepo`/`giscusCategory` 等）；启用后页面加载 `giscus.app` 脚本并渲染评论区 |
 | 11 | Gitalk 评论支持（Gridea-Pro 适配） | feature/gitalk | planned | 6 | `comments.html` 的 Gitalk 分支大小写修正为 `'Gitalk'`（与 `'Giscus'` 一致）；`partials/gitalk.html` 数据源由已失效的 `commentSetting.gitalkSetting.*` 子对象改为 Gridea-Pro 扁平化后的 `commentSetting` 顶层字段（`clientId`/`clientSecret`/`repository`/`owner`，具体字段名以 Gridea-Pro 渲染注入为准）；本地 Gridea-Pro 选 Gitalk 后评论区正常渲染 |
 | 12 | Disqus 评论支持（Gridea-Pro 适配） | feature/disqus | planned | 6 | `comments.html` 的 Disqus 分支大小写修正为 `'Disqus'`（与 `'Giscus'` 一致）；`partials/disqus.html` 数据源由已失效的 `commentSetting.disqusSetting.*` 子对象改为 Gridea-Pro 扁平化后的 `commentSetting` 顶层字段（`shortname`/`apikey`/`api`，具体字段名以 Gridea-Pro 渲染注入为准）；本地 Gridea-Pro 选 Disqus 后评论区正常渲染 |
