@@ -24,6 +24,16 @@ out/
 # AI 工具数据（本地，不纳入版本控制）
 .workbuddy/
 
+# 安全删除残留
+.Trash-*/
+
+# Gridea 在仓库内构建演示站时产生的中间数据
+# 真正要发布的站点内容是 docs/ 本身，不含以下目录
+docs/output/
+docs/config/
+docs/static/
+docs/assets/
+
 # 密钥（绝不提交）
 *.key
 *.pem
