@@ -5,13 +5,19 @@
 
 ## 1. 目录结构
 
-- `src/` — 源码（入口与业务逻辑）
-- `tests/` — 测试
+- `src/` — 主题源码（模板 + 静态资源 + 设置定义）
+  - `src/config.json` — 主题元信息与设置定义（名称/版本/作者/16 项 `customConfig`），是配置与版本号的**唯一事实源**
+  - `src/templates/` — 页面模板（首页/博客/文章/归档/分类/标签/友链/关于/404/闪念），均 `{% extends "base.html" %}`
+  - `src/templates/partials/` — 复用片段：`head` / `header` / `footer` / `scripts` / `comments` / 各评论系统 / `global-seo` / `index-seo` / `reading-progress` / `post-list` / `post-pagination` / `post-tags`
+  - `src/assets/styles/` — `main.css`、`icons.css`、`lib/remixicon.woff2`
+  - `src/assets/lib/` — 第三方脚本（vendored）`Valine.min.js`
+  - `src/assets/media/images/` — `favicon.ico`、`avatar.jpg`、`zuobiao.svg`、`preview.png`
+- `tests/` — 测试（当前为空；主题无独立单元测试，正确性由宿主平台渲染验证）
 - `docs/` — 项目文档（使用指南、参考等）
 - `docs/engineering/` — 工程协作文档：架构 / 配置 / 完成定义 / 发版 / ADR
-- `scripts/` — 辅助脚本
+- `scripts/` — 辅助脚本（当前为空）
 
-（按技术栈补充更细的分层，例如 `src/<pkg>/` 或 `src/domain|infra|ui/`。）
+> 本项目是**静态主题**，无编译/打包步骤，也无分层业务代码；「源码」即模板与资源，由宿主平台在渲染期组装。
 
 ## 2. 分层与依赖方向
 
@@ -20,13 +26,20 @@
 
 ## 3. 错误处理
 
-- 不吞异常 / 错误；错误信息须包含足够定位上下文。
-- （补充本项目的统一策略：错误如何表示、如何向上传播、如何呈现给用户。）
+主题运行在宿主平台渲染期，没有后端异常体系。统一策略是**缺省值优先 + 条件渲染**，避免空配置导致页面崩溃：
+
+- 设置缺省：所有可选设置经 `|default:'…'` 提供回退值（如 `location` 默认「中国 · 深圳」、格言默认乔布斯语录、`avatar` 缺省回退到 `/media/images/avatar.jpg`）。
+- 条件渲染：可选配置片段用 `{% if theme_config.x %}…{% endif %}` 包裹（如 `favicon`、`ga`、`customCss`、`customJs`、各社交链接），缺失即不输出对应 DOM/请求。
+- 空数据分支：列表类模板对空集合显式分支（如 `memos.html` 的 `{% if memos and memos|length > 0 %}…{% else %}暂无闪念{% endif %}`）。
+- 客户端脚本：JS 先做存在性 / `scrollHeight` 守卫再操作 DOM，避免空节点报错。
 
 ## 4. 日志
 
-- 使用统一日志入口与级别（debug / info / warn / error）；禁止用裸打印做长期日志。
-- 日志中不得输出密钥或个人信息。
+静态主题无服务端日志入口。约定：
+
+- 调试信息仅通过浏览器 DevTools Console 输出，不进入生产页面。
+- 第三方脚本（Valine / Waline 等）的报错交由各自控制台，主题不拦截、不吞没。
+- 不向任何日志 / 第三方（GA 除外，且 GA 仅在配置了 `ga` 时加载）输出密钥或个人信息；`customJs` 由站长自行对其内容负责。
 
 ## 5. 依赖引入规则
 

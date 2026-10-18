@@ -5,7 +5,7 @@
 
 ## 0. 项目
 
-amore-plus — （一句话说明本项目做什么）。
+amore-plus — 基于 Jinja2 方言的极简博客主题（Gridea-Pro 兼容），聚焦阅读体验，支持明/暗双主题、阅读进度、闪念热力图与多评论系统接入；由宿主平台在渲染期生成页面，自身无独立构建/运行时。
 
 ## 1. 上下文入口（按此顺序阅读）
 
@@ -27,11 +27,11 @@ amore-plus — （一句话说明本项目做什么）。
 
 | 目的 | 命令 |
 |------|------|
-| 安装依赖 | （待填） |
-| 运行 | （待填） |
-| 测试 | （待填） |
-| Lint | （待填） |
-| 格式化检查 | （待填） |
+| 安装依赖 | 纯静态主题，无运行时依赖；如需本地做 HTML 静态检查，安装 `npx htmlhint` / `npx prettier`（可选） |
+| 运行 | 将 `src/` 整体放入宿主平台（Gridea-Pro）主题目录 `<GRIDEA_HOME>/themes/amore-plus/` 并后台启用，无独立运行入口 |
+| 测试 | 无独立单元测试：模板由宿主平台渲染期解析，正确性以「启用主题后各页面可正常渲染」为准 |
+| Lint | HTML 结构检查：`npx htmlhint 'src/templates/**/*.html'`（模板含平台专有变量，仅查静态结构）；样式检查：`npx stylelint 'src/assets/styles/**/*.css'`（可选，需安装） |
+| 格式化检查 | `npx prettier --check 'src/**/*.{html,css,js}'`（需安装 prettier） |
 
 ## 3. 工作流
 
@@ -97,11 +97,11 @@ amore-plus — （一句话说明本项目做什么）。
 
 | 契约 / 事实 | 唯一事实源在哪 |
 |---|---|
-| 配置项 / 设置键 | （待填） |
-| 外部接口契约 | （待填） |
-| 数据结构与存储 | （待填） |
-| 关键算法或业务规则 | （待填） |
-| 版本号 | （待填：指向唯一维护版本号的那一处——包清单 / 版本文件 / 常量。发版时只改这一处，不要在 README 或文档里另抄一份） |
+| 配置项 / 设置键 | `src/config.json` 的 `customConfig` 数组（25 项：原 16 项基础/外观/社交/统计/高级设置 + Giscus 评论 9 项：giscusRepo / giscusRepoId / giscusCategory / giscusCategoryId / giscusMapping / giscusReactions / giscusInputPosition / giscusLang / giscusTheme） |
+| 外部接口契约 | 宿主平台（Gridea-Pro）主题 API：模板变量 `config` / `theme_config` / `menus` / `posts` / `memos` / `category` / `tag` / `post` 及其字段（以宿主平台文档与模板实际用法为准） |
+| 数据结构与存储 | 无（静态主题，不持有数据；内容由宿主平台注入到模板变量） |
+| 关键算法或业务规则 | ① 主题切换与记忆：`src/templates/index.html` 读取 `theme_config.defaultTheme` 与 `localStorage.theme`，叠加系统 `prefers-color-scheme`；② 闪念热力图与分页：`src/templates/memos.html` 客户端脚本（GitHub 风格年热力图 + 每页 20 条分页） |
+| 版本号 | `src/config.json` 的 `version` 字段（当前 `1.1.0`）；发版只改这一处，README/CHANGELOG 不另抄 |
 
 ## 9. 同改矩阵
 

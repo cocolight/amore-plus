@@ -22,7 +22,18 @@
 
 ## 本地检查
 
-（按本项目技术栈填写，须与 `AGENTS.md` §2「常用命令」完全一致）
+须与 `AGENTS.md` §2「常用命令」完全一致：
+
+```bash
+# HTML 静态结构检查（模板含平台专有变量，仅查静态结构）
+npx htmlhint 'src/templates/**/*.html'
+# 样式检查（可选）
+npx stylelint 'src/assets/styles/**/*.css'
+# 格式化检查
+npx prettier --check 'src/**/*.{html,css,js}'
+```
+
+主题无独立单元测试；改动后请在宿主平台（Gridea-Pro）启用主题，确认相关页面仍可正常渲染。
 
 ## 发版
 
