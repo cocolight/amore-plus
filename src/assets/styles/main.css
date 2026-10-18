@@ -674,52 +674,28 @@ figure { margin: 1.5em 0; }
    Reading progress indicator
    ========================================================================== */
 
-.reading-progress-container {
+/* 顶部细线：轨道通栏，填充条用 scaleX 表示进度（GPU 合成，不触发重排） */
+.reading-progress-bar {
   position: fixed;
-  top: 100px;
-  right: 40px;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 8px 16px;
-  border-radius: 9999px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.05);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  opacity: 0;
-  transform: translateY(20px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 100;
+  background-color: var(--border-color);
   pointer-events: none;
-  font-size: 14px;
-  font-weight: 500;
-  color: #4b5563;
 }
-.reading-progress-container.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+
+.reading-progress-bar__fill {
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent-color);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  will-change: transform;
 }
-.reading-label { color: #6b7280; }
-.reading-value {
-  color: var(--accent-color);
-  font-weight: 700;
-  min-width: 3ch;
-  text-align: right;
-  margin-right: 4px;
-}
-.progress-ring {
-  transform: rotate(-90deg);
-  width: 20px;
-  height: 20px;
-}
-.progress-ring__circle-bg { stroke: #e5e7eb; }
-.progress-ring__circle {
-  stroke: var(--accent-color);
-  transition: stroke-dashoffset 0.1s linear;
-  stroke-linecap: round;
-}
+
+.dark-theme .reading-progress-bar { background-color: var(--dark-border); }
 
 /* ==========================================================================
    Theme toggle buttons (sun / moon)
@@ -945,13 +921,6 @@ body.dark-theme {
 body.dark-theme .theme-toggle-sun  { display: none !important; }
 body.dark-theme .theme-toggle-moon { display: inline-block !important; color: #FFD700; }
 
-.dark-theme .reading-progress-container {
-  background-color: rgba(41, 42, 45, 0.85);
-  color: var(--dark-text);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-.dark-theme .reading-label { color: var(--dark-text); }
-
 .dark-theme .comments-header { color: var(--dark-text); border-left-color: var(--dark-text); }
 .dark-theme #vcomments .vwrap { border-color: var(--dark-border); background-color: rgba(255, 255, 255, 0.05); }
 .dark-theme #vcomments .vheader .vinput { color: var(--dark-text); }
@@ -1064,7 +1033,6 @@ html { scroll-behavior: smooth; }
    ========================================================================== */
 
 @media screen and (max-width: 768px) {
-  .reading-progress-container { display: none !important; }
   #vcomments .vheader .vinput { width: 100%; margin-bottom: 10px; }
   .post-page { max-width: 860px; }
   .post-layout { display: block; }
