@@ -199,3 +199,53 @@
     });
 </script>
 
+<script>
+  // Table of Contents (TOC) generator
+  document.addEventListener('DOMContentLoaded', () => {
+    const content = document.querySelector('.mod-post__entry');
+    const tocList = document.querySelector('.toc-list');
+    const tocAside = document.getElementById('toc');
+
+    if (!content || !tocList || !tocAside) {
+      return;
+    }
+
+    const headings = content.querySelectorAll('h2, h3');
+    if (headings.length === 0) {
+      tocAside.style.display = 'none';
+      return;
+    }
+
+    const links = [];
+    headings.forEach((heading, index) => {
+      if (!heading.id) {
+        heading.id = 'toc-heading-' + index;
+      }
+      const level = heading.tagName.toLowerCase() === 'h3' ? 'toc-h3' : '';
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = '#' + heading.id;
+      a.className = 'toc-link ' + level;
+      a.textContent = heading.textContent.trim();
+      li.appendChild(a);
+      tocList.appendChild(li);
+      links.push(a);
+    });
+
+    const onScroll = () => {
+      let activeIndex = 0;
+      headings.forEach((heading, index) => {
+        if (heading.getBoundingClientRect().top <= 100) {
+          activeIndex = index;
+        }
+      });
+      links.forEach((link, index) => {
+        link.classList.toggle('active', index === activeIndex);
+      });
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  });
+</script>
+
