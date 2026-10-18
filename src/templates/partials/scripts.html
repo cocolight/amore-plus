@@ -232,20 +232,55 @@
       links.push(a);
     });
 
-    const onScroll = () => {
-      let activeIndex = 0;
-      headings.forEach((heading, index) => {
-        if (heading.getBoundingClientRect().top <= 100) {
-          activeIndex = index;
+    // 当前章节判定：以「阅读线」（视口顶部往下 22%）为界，取最后一个越线的标题
+    const readingLine = () => Math.max(80, Math.round(window.innerHeight * 0.22));
+
+    // -1 表示尚未进入任何章节（此时不高亮任何目录项）
+    let activeIndex = -1;
+    let ticking = false;
+
+    const updateActive = () => {
+        const line = readingLine();
+        let next = -1;
+        headings.forEach((heading, index) => {
+            if (heading.getBoundingClientRect().top <= line) {
+                next = index;
+            }
+        });
+
+        // 已滚到文档底部：强制高亮最后一项。
+        // 末章节距文档末尾往往不足阈值高度，否则它永远无法激活。
+        const scrollEl = document.scrollingElement || document.documentElement;
+        if (scrollEl.scrollTop + window.innerHeight >= scrollEl.scrollHeight - 2) {
+            next = headings.length - 1;
         }
-      });
-      links.forEach((link, index) => {
-        link.classList.toggle('active', index === activeIndex);
-      });
+
+        if (next === activeIndex) {
+            return;
+        }
+        activeIndex = next;
+        links.forEach((link, index) => {
+            link.classList.toggle('active', index === activeIndex);
+        });
     };
 
-    onScroll();
+    const onScroll = () => {
+        if (ticking) {
+            return;
+        }
+        ticking = true;
+        window.requestAnimationFrame(() => {
+            updateActive();
+            ticking = false;
+        });
+    };
+
+    updateActive();
     window.addEventListener('scroll', onScroll, { passive: true });
-  });
+    // 窗口尺寸变化会改变阅读线位置与标题偏移，需重算
+    window.addEventListener('resize', onScroll);
+    // 点击目录锚点跳转后（hash 变化未必触发 scroll）同步一次
+    window.addEventListener('hashchange', onScroll);
+});
 </script>
 
