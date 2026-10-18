@@ -101,7 +101,7 @@ amore-plus — 基于 Jinja2 方言的极简博客主题（Gridea-Pro 兼容）�
 | 外部接口契约 | 宿主平台（Gridea-Pro）主题 API：模板变量 `config` / `theme_config` / `menus` / `posts` / `memos` / `category` / `tag` / `post` 及其字段（以宿主平台文档与模板实际用法为准） |
 | 数据结构与存储 | 无（静态主题，不持有数据；内容由宿主平台注入到模板变量） |
 | 关键算法或业务规则 | ① 主题切换与记忆：`src/templates/index.html` 读取 `theme_config.defaultTheme` 与 `localStorage.theme`，叠加系统 `prefers-color-scheme`；② 闪念热力图与分页：`src/templates/memos.html` 客户端脚本（GitHub 风格年热力图 + 每页 20 条分页） |
-| 版本号 | `src/config.json` 的 `version` 字段（当前 `1.1.0`）；发版只改这一处，README/CHANGELOG 不另抄 |
+| 版本号 | `src/config.json` 的 `version` 字段（当前 `1.0.0`）；发版只改这一处，README/CHANGELOG 不另抄 |
 
 ## 9. 同改矩阵
 

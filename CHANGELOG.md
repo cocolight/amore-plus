@@ -5,6 +5,10 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-18
+
+首个正式版本。完成项目骨架、明/暗双主题、内容页与阅读进度、导航、闪念与热力图、SEO、主题设置面板，并新增 Giscus 评论支持、文章目录（TOC）与顶部阅读进度细线；其余四套评论系统完成 Gridea-Pro 适配。
+
 ### Added
 
 - 新增文章目录（TOC）功能：新增 `src/templates/partials/toc.html` 并由 `post.html` 引用；文章页 `body` 加 `post-page` 类（宽度放宽至 1100px），文章与 TOC 包进 `.post-layout` flex 容器，桌面端 TOC 为右侧 sticky 侧栏、≤768px 隐藏；`scripts.html` 新增 TOC 生成脚本：遍历正文 `.mod-post__entry` 的 `h2`/`h3` 自动生成锚点 `toc-heading-N`、渲染目录列表，滚动时高亮当前章节，文章无 `h2`/`h3` 时自动隐藏 TOC（已通过本地 Gridea-Pro 渲染验证）。
