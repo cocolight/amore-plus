@@ -1011,6 +1011,10 @@ body.dark-theme .theme-toggle-moon { display: inline-block !important; color: #F
   max-height: calc(100vh - 120px);
   overflow-y: auto;
   font-size: 0.85rem;
+  /* 目录滚到边缘时不把滚动传递给正文，避免翻页时正文跟着跑 */
+  overscroll-behavior: contain;
+  /* 程序化滚动（scrollTo）与用户滚动手感一致 */
+  scrollbar-width: thin;
 }
 
 .toc-title {

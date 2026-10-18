@@ -239,6 +239,55 @@
     let activeIndex = -1;
     let ticking = false;
 
+    // ── 目录面板跟随滚动 ────────────────────────────────────────
+    // 面板高度不足以容纳全部目录项时（overflow-y: auto），焦点项需自行保持在可视范围内。
+    const panel = tocAside;
+
+    // 移动距离不超过该值时直接跳到目标位置，超过则平滑滚动：
+    // 逐节滚动多为小幅移动（瞬时更跟手），点击目录跳转多为大幅移动（平滑更自然）
+    const INSTANT_THRESHOLD = 120;
+
+    // 用户手动翻过目录后让位，直到文章再次滚动才恢复跟随
+    let userScrolledPanel = false;
+    const markPanelUserScroll = () => {
+        userScrolledPanel = true;
+    };
+    panel.addEventListener('wheel', markPanelUserScroll, { passive: true });
+    panel.addEventListener('touchmove', markPanelUserScroll, { passive: true });
+
+    const followActive = () => {
+        if (userScrolledPanel || activeIndex < 0) {
+            return;
+        }
+        // 目录未超出面板高度时无从滚动
+        if (panel.scrollHeight <= panel.clientHeight) {
+            return;
+        }
+        const link = links[activeIndex];
+        if (!link) {
+            return;
+        }
+
+        // 焦点项中心与面板中心的偏差。
+        // 只改 scrollTop，不使用 scrollIntoView —— 后者会连带滚动外层页面把正文顶走。
+        const linkRect = link.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
+        const delta = (linkRect.top + linkRect.height / 2) - (panelRect.top + panel.clientHeight / 2);
+
+        const maxScroll = panel.scrollHeight - panel.clientHeight;
+        const target = Math.max(0, Math.min(panel.scrollTop + delta, maxScroll));
+        const distance = target - panel.scrollTop;
+        if (Math.abs(distance) < 1) {
+            return;
+        }
+
+        if (Math.abs(distance) <= INSTANT_THRESHOLD) {
+            panel.scrollTop = target;
+        } else {
+            panel.scrollTo({ top: target, behavior: 'smooth' });
+        }
+    };
+
     const updateActive = () => {
         const line = readingLine();
         let next = -1;
@@ -271,13 +320,19 @@
         ticking = true;
         window.requestAnimationFrame(() => {
             updateActive();
+            followActive();
             ticking = false;
         });
     };
 
     updateActive();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    // 窗口尺寸变化会改变阅读线位置与标题偏移，需重算
+    followActive();
+    window.addEventListener('scroll', () => {
+        // 文章再次滚动 → 恢复目录自动跟随
+        userScrolledPanel = false;
+        onScroll();
+    }, { passive: true });
+    // 窗口尺寸变化会改变阅读线位置、面板高度与标题偏移，需重算
     window.addEventListener('resize', onScroll);
     // 点击目录锚点跳转后（hash 变化未必触发 scroll）同步一次
     window.addEventListener('hashchange', onScroll);
