@@ -5,7 +5,7 @@
   "description": "极简博客主题 Gridea-Pro 版，聚焦阅读体验，支持明/暗双主题、文章目录、顶部阅读进度细线、多评论系统（Giscus / Gitalk / Valine / Waline / Disqus）、闪念与热力图等。",
   "engine": "jinja2",
   "templateEngine": "jinja2",
-  "repository": "",
+  "repository": "https://github.com/cocolight/amore-plus",
   "customConfig": [
     {
       "name": "siteLogo",
