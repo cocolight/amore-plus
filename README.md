@@ -2,7 +2,7 @@
 
 > 极简博客主题 Gridea-Pro 版，聚焦阅读体验。支持明/暗双主题、文章目录、顶部阅读进度细线、闪念热力图与多评论系统（Giscus / Gitalk / Valine / Waline / Disqus）接入。
 
-![预览](docs/demo/assets/media/preview.png)
+![预览](docs/assets/media/preview.png)
 
 ## 📖 两份文档，按需选择
 
@@ -11,7 +11,7 @@
 | **想使用这个主题** | [**README.theme.md**](README.theme.md) —— 面向使用者的说明：安装、主题设置、功能、截图、授权。 |
 | **想参与开发** | 当前文件 —— 开发约定、目录结构、模板方言注意事项、验证方式 |
 
-**在线演示**：<https://cocolight.github.io/amore-plus/docs/demo/>（演示页本身是一篇《如何使用 amore-plus》的示例文章）
+**在线演示**：<https://cocolight.github.io/amore-plus/>（完整示例站点，含首页、博客、闪念、归档、分类、标签、友链、关于与多篇示例文章，可直接体验目录跟随、阅读进度与明暗切换）
 
 ## 功能
 
@@ -82,7 +82,7 @@ npx prettier --check 'src/**/*.{html,css,js}'
   - `src/assets/media/images/`：`favicon.ico`、`avatar.jpg`、`zuobiao.svg`、`preview.png`
 - `tests/`：测试（当前为空；主题无独立单元测试，正确性由宿主平台渲染验证）
 - `docs/`：文档，含使用指南、参考与教程
-  - `docs/demo/`：在线演示页，可用 GitHub Pages 访问
+  - `docs/`：演示站点源码，由 `tools/build-demo-site.py` 生成，经 GitHub Pages 发布
   - `docs/engineering/`：工程协作文档（架构 / 配置 / 完成定义 / 发版 / ADR）
 - `scripts/`：辅助脚本（当前为空）
 

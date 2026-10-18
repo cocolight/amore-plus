@@ -6,9 +6,9 @@
 
 ## 在线演示
 
-**[打开演示页面 →](https://cocolight.github.io/amore-plus/demo/)**
+**[打开演示站点 →](https://cocolight.github.io/amore-plus/)**
 
-演示页本身就是一篇《如何使用 amore-plus》的示例文章，可直接体验目录跟随、阅读进度与明暗切换。
+演示站点是一个完整的示例博客，含首页、博客列表、闪念、归档、分类、标签、友链、关于与多篇示例文章，可直接体验目录跟随、阅读进度与明暗切换。
 
 ## 特性
 
@@ -22,9 +22,17 @@
 
 更多截图：
 
-| 深色模式 | 目录跟随 |
+| 首页（深色） | 目录跟随 |
 |---|---|
-| ![深色](assets/media/screenshot-dark.png) | ![目录跟随](assets/media/screenshot-toc-follow.png) |
+| ![首页深色](assets/media/screenshot-home-dark.png) | ![目录跟随](assets/media/screenshot-toc-follow.png) |
+
+| 文章页 | 闪念与热力图 |
+|---|---|
+| ![文章页](assets/media/screenshot-post-light.png) | ![闪念](assets/media/screenshot-memos.png) |
+
+| 博客列表 |
+|---|
+| ![博客列表](assets/media/screenshot-blog.png) |
 
 ## 安装
 
