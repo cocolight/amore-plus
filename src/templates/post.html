@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block title %}{{ post.title }} | {{ config.siteName }}{% endblock %}
+{% block body_class %}post-page{% endblock %}
 
 {% block content %}
 {% include "partials/header.html" %}
 
+<div class="post-layout">
 <article class="mod-post mod-post__type-post">
     <header>
         <h1 class="mod-post__title">
@@ -38,6 +40,8 @@
             </div>
 
 </article>
+{% include "partials/toc.html" %}
+</div>
 
 
 {% if post.link %}
@@ -47,8 +51,6 @@
 {% endif %}
 
 <div class="mod-post__poster">
-</div>
-
 </div>
 
 {% if post.link %}
