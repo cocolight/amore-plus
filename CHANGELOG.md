@@ -13,7 +13,7 @@
 
 ### Changed
 
-- 阅读进度由右侧 SVG 圆环浮窗（含「阅读进度」「0%」文字）改为页面顶部一根细线：`partials/reading-progress.html` 改为 `.reading-progress-bar` + `__fill` 两层结构，`main.css` 用 `position: fixed; top:0; left:0; width:100%; height:3px` 通栏轨道，进度用填充条的 `transform: scaleX()` 从 0 渐满至 100%（无文字，仅以颜色与宽度表意），颜色复用 `var(--accent-color)` 跟随站点强调色，轨道色随明/暗切换；`scripts.html` 的滚动逻辑改为写 `scaleX` 并加 `requestAnimationFrame` 节流与变化短路，同时移除旧浮窗的 100px 显示阈值逻辑；补充 `role="progressbar"` 与 `aria-valuenow` 无障碍属性。
+- 阅读进度由右侧 SVG 圆环浮窗（含「阅读进度」「0%」文字）改为页面顶部一根细线：`partials/reading-progress.html` 改为 `.reading-progress-bar` + `__fill` 两层结构，`main.css` 用 `position: fixed; top:0; left:0; width:100%; height:3px` 通栏轨道，进度用填充条的 `transform: scaleX()` 从 0 渐满至 100%（无文字，仅以颜色与宽度表意），颜色复用 `var(--accent-color)` 跟随站点强调色，轨道色随明/暗切换；`scripts.html` 的滚动逻辑改为写 `scaleX` 并加 `requestAnimationFrame` 节流与变化短路，同时移除旧浮窗的 100px 显示阈值逻辑；补充 `role="progressbar"` 与 `aria-valuenow` 无障碍属性。（已通过本地 Gridea-Pro 渲染验证）
 - 补全 AI 约束文档占位：AGENTS.md（§0 项目描述 / §2 常用命令 / §8 单一事实源坐标）、README.md、ROADMAP.md、CONTRIBUTING.md、docs/engineering/architecture.md；明确主题为 Gridea-Pro 兼容静态主题、无独立单元测试、版本号与设置键事实源为 `src/config.json`。
 - 修正文档平台表述：将早期误写的「Halo 兼容」更正为「Gridea-Pro 兼容」（主题使用 Jinja2/Pongo2 方言，实际运行于 Gridea-Pro，非 Halo）。
 
