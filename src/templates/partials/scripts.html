@@ -143,58 +143,62 @@
 </script>
 
 <script>
-    // Reading Progress Component
+    // Reading Progress Component: 页面顶部细线
     document.addEventListener('DOMContentLoaded', () => {
-        const progressValue = document.querySelector('.reading-value');
-        const progressCircle = document.querySelector('.progress-ring__circle');
-        const container = document.querySelector('.reading-progress-container');
+        const bar = document.querySelector('.reading-progress-bar');
+        const fill = document.querySelector('.reading-progress-bar__fill');
 
         // Exit if elements don't exist (e.g., not on a post page)
-        if (!progressValue || !progressCircle || !container) {
+        if (!bar || !fill) {
             return;
         }
 
-        // SVG Circle setup
-        const radius = progressCircle.r.baseVal.value;
-        const circumference = 2 * Math.PI * radius;
+        let ticking = false;
+        let lastRatio = -1;
 
-        progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
-        progressCircle.style.strokeDashoffset = circumference;
-
-        function setProgress(percent) {
-            const safePercent = Math.min(100, Math.max(0, percent));
-            progressValue.textContent = `${Math.round(safePercent)}%`;
-            const offset = circumference - (safePercent / 100) * circumference;
-            progressCircle.style.strokeDashoffset = offset;
+        function setProgress(ratio) {
+            const safeRatio = Math.min(1, Math.max(0, ratio));
+            if (Math.abs(safeRatio - lastRatio) < 0.001) {
+                return;
+            }
+            lastRatio = safeRatio;
+            // 用 scaleX 表示进度：走 GPU 合成，不触发重排（比改 width 性能好）
+            fill.style.transform = `scaleX(${safeRatio})`;
+            bar.setAttribute('aria-valuenow', String(Math.round(safeRatio * 100)));
         }
 
-        function onScroll() {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        function update() {
+            const scrollEl = document.scrollingElement || document.documentElement;
+            const scrollTop = scrollEl.scrollTop;
+            const scrollable = scrollEl.scrollHeight - window.innerHeight;
 
-            if (scrollHeight <= 0) {
+            if (scrollable <= 0) {
+                // 内容不足一屏：无可滚动距离，进度恒为 0
                 setProgress(0);
                 return;
             }
 
-            const scrollPercent = (scrollTop / scrollHeight) * 100;
-            setProgress(scrollPercent);
+            setProgress(scrollTop / scrollable);
+        }
 
-            // Show/Hide logic: Show if scrolled more than 100px
-            if (scrollTop > 100) {
-                container.classList.add('show');
-            } else {
-                container.classList.remove('show');
+        function onScroll() {
+            if (ticking) {
+                return;
             }
+            ticking = true;
+            window.requestAnimationFrame(() => {
+                update();
+                ticking = false;
+            });
         }
 
         // Initialize
-        onScroll();
+        update();
 
         // Listen for scroll events
         window.addEventListener('scroll', onScroll, { passive: true });
 
-        // Recalculate on resize
+        // Recalculate on resize (viewport height changes the scrollable range)
         window.addEventListener('resize', onScroll);
     });
 </script>
