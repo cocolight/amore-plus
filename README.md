@@ -2,7 +2,7 @@
 
 > 极简博客主题 Gridea-Pro 版，聚焦阅读体验。支持明/暗双主题、文章目录、顶部阅读进度细线、闪念热力图与多评论系统（Giscus / Gitalk / Valine / Waline / Disqus）接入。
 
-![预览](docs/assets/media/preview.png)
+![预览](docs/media/preview.png)
 
 ## 📖 两份文档，按需选择
 
