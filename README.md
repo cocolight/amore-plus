@@ -2,7 +2,7 @@
 
 > 极简博客主题 Gridea-Pro 版，聚焦阅读体验。支持明/暗双主题、文章目录、顶部阅读进度细线、闪念热力图与多评论系统（Giscus / Gitalk / Valine / Waline / Disqus）接入。
 
-![预览](demo/assets/media/preview.png)
+![预览](docs/demo/assets/media/preview.png)
 
 ## 📖 两份文档，按需选择
 
@@ -11,7 +11,7 @@
 | **想使用这个主题** | [**README.theme.md**](README.theme.md) —— 面向使用者的说明（安装、设置、功能、截图、授权）。提交到 [Gridea-Pro 官方主题仓库](https://github.com/Gridea-Pro/gridea-pro-themes)的版本即由此文件整理而来。 |
 | **想参与开发** | 当前文件 —— 开发约定、目录结构、模板方言注意事项、验证方式 |
 
-**在线演示**：<https://cocolight.github.io/amore-plus/demo/>（演示页本身是一篇《如何使用 amore-plus》的示例文章）
+**在线演示**：<https://cocolight.github.io/amore-plus/docs/demo/>（演示页本身是一篇《如何使用 amore-plus》的示例文章）
 
 ## 功能
 
